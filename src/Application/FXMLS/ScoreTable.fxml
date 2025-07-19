@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="400.0" style="-fx-background-color: #94ddf8;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Application.Controllers.ScoreController">
+   <children>
+      <TableView fx:id="playersTable" layoutX="29.0" layoutY="81.0" prefHeight="599.0" prefWidth="342.0">
+        <columns>
+          <TableColumn fx:id="nameCol" prefWidth="108.0" text="Name" />
+          <TableColumn fx:id="timeCol" prefWidth="145.0" text="Time" />
+            <TableColumn fx:id="scoreCol" prefWidth="88.0" text="Scores" />
+        </columns>
+      </TableView>
+      <Label layoutX="29.0" layoutY="26.0" text="Score Table:" />
+      <Button layoutX="324.0" layoutY="13.0" mnemonicParsing="false" onAction="#BackToHome" prefHeight="26.0" prefWidth="57.0" text="Back" />
+   </children>
+</AnchorPane>

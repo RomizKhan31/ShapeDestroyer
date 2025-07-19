@@ -1,5 +1,6 @@
-package Application.controller;
+package Application.Controllers;
 
+import Application.Credentials;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -11,10 +12,8 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
 
 public class WelcomeController {
 
@@ -25,12 +24,18 @@ public class WelcomeController {
     @FXML
     private TextField userTextField;
 
-    private static final String URL = "jdbc:mysql://b3p5m8nhncgiqy1daeus-mysql.services.clever-cloud.com:3306/b3p5m8nhncgiqy1daeus";
-    private static final String USER = "urowmyrks8sa1rih";
-    private static final String PASSWORD = "RsKRqsn19uGmkebas6WR";
+    private static String URL = Credentials.getUrl();
+    private  static String USER = Credentials.getUser();
+    private static String PASSWORD = Credentials.getPassword();
+
+    private static String userName = "";
+
+    public static String getUserName() {
+        return userName;
+    }
 
     public void submitUser(ActionEvent event) {
-        String userName = userTextField.getText();
+        userName = userTextField.getText();
         if (userName.isEmpty()) {
             userChecker.setText("Please enter a username!");
             return;
@@ -41,14 +46,6 @@ public class WelcomeController {
                 userChecker.setText("Player added successfully!");
             } else {
                 userChecker.setText("Username isn't available. Try another.");
-            }
-        } catch (SQLException e) {
-            if (e.getMessage().contains("Communications link failure")) {
-                userChecker.setText("No Internet! Please check your connection.");
-            } else if ("23000".equals(e.getSQLState())) {
-                userChecker.setText("Username already exists. Try another.");
-            } else {
-                userChecker.setText("Database error: " + e.getMessage());
             }
         } catch (Exception e) {
             userChecker.setText("Unexpected error: " + e.getMessage());
@@ -73,33 +70,50 @@ public class WelcomeController {
     }
 
 
+    //For updating player score in the database
+    static void updatePlayerScore(String userName, int score){
+        if (userName == null || userName.isEmpty()) {
+            System.out.println("Username is null or empty. Cannot update score.");
+            return;
+        }
+        String updateQuery = "UPDATE players SET score = ? WHERE name = ?";
+        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+             PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
+            preparedStatement.setInt(1, score);
+            preparedStatement.setString(2, userName);
+            preparedStatement.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
 
 
 
     @FXML
-    public void easyMode(ActionEvent event) {
+    public void easyMode() {
         String mode  = "Easy";
-        loadGameScene(1.0, mode);
+        startGame(1.0, mode);
     }
 
     @FXML
-    public void mediumMode(ActionEvent event) {
+    public void mediumMode() {
         String mode  = "Medium";
-        loadGameScene(3.0, mode);
+        startGame(3.0, mode);
     }
 
     @FXML
-    public void hardMode(ActionEvent event) {
+    public void hardMode() {
         String mode  = "Hard";
-        loadGameScene(4.5, mode);
+        startGame(4.5, mode);
     }
 
-    private void loadGameScene(double fallingSpeed, String str) {
+    private void startGame(double fallingSpeed, String str) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Application/resources/fxmls/gameUi.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Application/FXMLS/gameUi.fxml"));
             Parent root = loader.load();
 
-            gameController Obj = loader.getController();
+            GameController Obj = loader.getController();
             Obj.setFallingSpeed(fallingSpeed);
             Obj.setMode(str);
 
@@ -114,4 +128,15 @@ public class WelcomeController {
             e.printStackTrace();
         }
     }
+
+    public void goToScore(ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("/Application/FXMLS/ScoreTable.fxml"));
+        Scene scene = new Scene(root);
+        Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+        stage.setScene(scene);
+        stage.setTitle("Score Table");
+        stage.setResizable(false);
+        stage.show();
+    }
+
 }

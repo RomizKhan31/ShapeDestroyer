@@ -1,8 +1,8 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="JavaFX" type="Application" factoryName="Application">
-    <option name="MAIN_CLASS_NAME" value="Main" />
+    <option name="MAIN_CLASS_NAME" value="Application.Main" />
     <module name="ShapeDestroyer" />
-    <option name="VM_PARAMETERS" value="--module-path $PATH_TO_FX$ --add-modules javafx.controls,javafx.fxml,javafx.web " />
+    <option name="VM_PARAMETERS" value="--module-path $USER_HOME$/openjfx-17.0.15_linux-x64_bin-sdk/javafx-sdk-17.0.15/lib --add-modules javafx.controls,javafx.fxml,javafx.web " />
     <method v="2">
       <option name="Make" enabled="true" />
     </method>
