@@ -6,13 +6,13 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="400.0" style="-fx-background-color: #94ddf8;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Application.controller.WelcomeController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="400.0" style="-fx-background-color: #94ddf8;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Application.Controllers.WelcomeController">
    <children>
       <Label layoutX="47.0" layoutY="48.0" text="Player name :">
          <font>
             <Font name="System Bold" size="14.0" />
          </font></Label>
-      <TextField fx:id="userTextField" layoutX="143.0" layoutY="44.0" prefHeight="20.0" prefWidth="140.0">
+      <TextField fx:id="userTextField" layoutX="154.0" layoutY="45.0" prefHeight="26.0" prefWidth="170.0">
          <font>
             <Font size="13.0" />
          </font></TextField>
@@ -33,7 +33,7 @@
             <Font name="System Bold" size="14.0" />
          </font></Label>
       <Label fx:id="userChecker" layoutX="99.0" layoutY="132.0" prefHeight="18.0" prefWidth="183.0" wrapText="true" />
-      <Button layoutX="47.0" layoutY="90.0" mnemonicParsing="false" onAction="#submitUser" prefHeight="9.0" prefWidth="66.0" text="Submit">
+      <Button layoutX="47.0" layoutY="90.0" mnemonicParsing="false" onAction="#submitUser" prefHeight="30.0" prefWidth="84.0" text="Submit">
          <font>
             <Font name="System Bold" size="14.0" />
          </font></Button>
@@ -41,5 +41,6 @@
          <font>
             <Font name="System Bold" size="14.0" />
          </font></Label>
+      <Button layoutX="231.0" layoutY="90.0" mnemonicParsing="false" onAction="#goToScore" text="All Scores" />
    </children>
 </AnchorPane>

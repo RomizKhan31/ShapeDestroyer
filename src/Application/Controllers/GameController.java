@@ -1,4 +1,4 @@
-package Application.controller;
+package Application.Controllers;
 
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -24,11 +24,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
-public class gameController {
+public class GameController {
 
     @FXML private Label modeLabel;
     @FXML private Label scoreLabel;
     @FXML private Pane gamePane;
+
     @FXML private Button exitButton;
 
     private Timeline gameLoop;
@@ -39,18 +40,40 @@ public class gameController {
     private final Random random = new Random();
     private int ticks = 0;
 
+
+    public void setFallingSpeed(double speed) {
+        this.fallingSpeed = speed;
+    }
+
+    public void setMode(String mode) {
+        this.mode = mode;
+        if (modeLabel != null) {
+            modeLabel.setText("Mode: " + mode);
+        }
+    }
+
+
     @FXML
     public void initialize() {
         startGame();
     }
 
+
+
+
     private void startGame() {
-        gameLoop = new Timeline(new KeyFrame(Duration.millis(30), e -> updateGame()));
+        gameLoop = new Timeline(new KeyFrame(Duration.millis(30), e -> {
+            try {
+                updateGame();
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
+            }
+        }));
         gameLoop.setCycleCount(Animation.INDEFINITE);
         gameLoop.play();
     }
 
-    private void updateGame() {
+    private void updateGame() throws Exception {
         // Gradually increase falling speed
         ticks++;
         if (ticks % 300 == 0) {
@@ -74,6 +97,9 @@ public class gameController {
 
             if (shape.getLayoutY() >= gamePane.getHeight()) {
                 gameLoop.stop();
+                //update player score in the database
+                WelcomeController.updatePlayerScore(WelcomeController.getUserName(), score);
+
                 Alert alert = new Alert(Alert.AlertType.INFORMATION, "Game Over! Shape reached the bottom.");
                 alert.show();
                 return;
@@ -118,6 +144,22 @@ public class gameController {
         return false;
     }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     private void resetGame() {
         score = 0;
         scoreLabel.setText("Score: 0");
@@ -156,7 +198,7 @@ public class gameController {
     @FXML
     private void handleExit() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Application/resources/fxmls/welcome.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Application/FXMLS/welcome.fxml"));
             Scene scene = new Scene(loader.load());
             Stage stage = (Stage) gamePane.getScene().getWindow();
             stage.setScene(scene);
@@ -168,14 +210,5 @@ public class gameController {
         }
     }
 
-    public void setFallingSpeed(double speed) {
-        this.fallingSpeed = speed;
-    }
 
-    public void setMode(String mode) {
-        this.mode = mode;
-        if (modeLabel != null) {
-            modeLabel.setText("Mode: " + mode);
-        }
-    }
 }

@@ -1,5 +1,0 @@
-1.mysql -h b3p5m8nhncgiqy1daeus-mysql.services.clever-cloud.com -P 3306 -u urowmyrks8sa1rih -p
-show: Enter password : RsKRqsn19uGmkebas6WR
-
-2.USE b3p5m8nhncgiqy1daeus;
-3.SELECT * FROM players;
