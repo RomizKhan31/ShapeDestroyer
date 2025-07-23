@@ -97,9 +97,11 @@ public class GameController {
 
             if (shape.getLayoutY() >= gamePane.getHeight()) {
                 gameLoop.stop();
+                gamePane.getChildren().clear();
+                fallingShapes.clear();
+
                 //update player score in the database
                 WelcomeController.updatePlayerScore(WelcomeController.getUserName(), score);
-
                 Alert alert = new Alert(Alert.AlertType.INFORMATION, "Game Over! Shape reached the bottom.");
                 alert.show();
                 return;
@@ -145,21 +147,6 @@ public class GameController {
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     private void resetGame() {
         score = 0;
         scoreLabel.setText("Score: 0");
@@ -174,12 +161,10 @@ public class GameController {
         if (gameLoop != null) {
             if (gameLoop.getStatus() == Animation.Status.RUNNING) {
                 gameLoop.pause();
-//                Alert alert = new Alert(Alert.AlertType.INFORMATION, "Game Paused!");
-//                alert.show();
+                Alert alert = new Alert(Alert.AlertType.INFORMATION, "Game Paused!");
+                alert.show();
             } else {
                 gameLoop.play();
-//                Alert alert = new Alert(Alert.AlertType.INFORMATION, "Game Resumed!");
-//                alert.show();
             }
         }
     }
@@ -197,12 +182,15 @@ public class GameController {
 
     @FXML
     private void handleExit() {
+        if (gameLoop != null) {
+            gameLoop.stop(); // Stop the game loop to prevent freezing
+        }
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Application/FXMLS/welcome.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Application/FXMLS/Welcome.fxml"));
             Scene scene = new Scene(loader.load());
             Stage stage = (Stage) gamePane.getScene().getWindow();
             stage.setScene(scene);
-            stage.setTitle("Welcome");
+            stage.setTitle("Shape Destroyer");
         } catch (IOException e) {
             e.printStackTrace();
             Alert alert = new Alert(Alert.AlertType.ERROR, "Failed to load homepage.");
