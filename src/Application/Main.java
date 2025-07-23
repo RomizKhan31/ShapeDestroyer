@@ -14,6 +14,7 @@ public class Main extends Application {
             Scene scene = new Scene(root, 400, 630);
             primaryStage.setScene(scene);
             primaryStage.setResizable(false);
+            primaryStage.setTitle("Shape Destroyer");
             primaryStage.show();
         } catch (Exception e) {
             e.printStackTrace();
